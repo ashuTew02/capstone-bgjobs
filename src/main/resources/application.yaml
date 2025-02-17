@@ -1,0 +1,25 @@
+server:
+  port: 8085
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    # Optionally specify producers or consumers, but 
+    # we rely primarily on the KafkaConfig bean
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/authdb
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    org:
+      apache:
+        kafka: ERROR
+      springframework:
+        kafka: ERROR
+    kafka: ERROR
