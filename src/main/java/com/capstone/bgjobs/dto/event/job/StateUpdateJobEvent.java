@@ -1,8 +1,9 @@
-package com.capstone.bgjobs.dto.event;
+package com.capstone.bgjobs.dto.event.job;
 
 import java.util.UUID;
 
-import com.capstone.bgjobs.dto.event.payload.StateUpdateJobEventPayload;
+import com.capstone.bgjobs.dto.event.Event;
+import com.capstone.bgjobs.dto.event.payload.job.StateUpdateJobEventPayload;
 import com.capstone.bgjobs.model.EventType;
 
 public final class StateUpdateJobEvent implements Event<StateUpdateJobEventPayload> {

@@ -5,7 +5,8 @@ public enum KafkaTopic {
     TOOLSCHEDULER_JFC("toolscheduler_jfc"),
     PARSER_JFC("parser_jfc"),
     ACK_JOB("ack_job"),
-    BGJOBS_JFC("bgjobs_jfc");
+    BGJOBS_JFC("bgjobs_jfc"),
+    JOBINGESTION_JFC("jobingestion_jfc");
 
     private final String topicName;
 

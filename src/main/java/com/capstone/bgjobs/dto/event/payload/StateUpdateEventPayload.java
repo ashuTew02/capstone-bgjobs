@@ -1,9 +1,10 @@
 package com.capstone.bgjobs.dto.event.payload;
 
 import com.capstone.bgjobs.model.FindingState;
+import com.capstone.bgjobs.model.KafkaTopic;
 import com.capstone.bgjobs.model.Tool;
 
-public final class StateUpdateJobEventPayload {
+public final class StateUpdateEventPayload {
     private String esFindingId;
     private Long tenantId;
     private Tool tool;
@@ -13,10 +14,19 @@ public final class StateUpdateJobEventPayload {
     private Long alertNumber;
     private FindingState updatedState;
     private String service = "github";
+    KafkaTopic destTopic;
+
+    public KafkaTopic getDestTopic() {
+        return destTopic;
+    }
+
+    public void setDestTopic(KafkaTopic destTopic) {
+        this.destTopic = destTopic;
+    }
 
     
-    public StateUpdateJobEventPayload(String esFindingId, Long tenantId, Tool tool, String owner, String repository,
-            Long alertNumber, String service, FindingState updatedState) {
+    public StateUpdateEventPayload(String esFindingId, Long tenantId, Tool tool, String owner, String repository,
+            Long alertNumber, String service, FindingState updatedState, KafkaTopic destTopic) {
         this.esFindingId = esFindingId;
         this.tenantId = tenantId;
         this.tool = tool;
@@ -25,8 +35,9 @@ public final class StateUpdateJobEventPayload {
         this.alertNumber = alertNumber;
         this.service = service;
         this.updatedState = updatedState;
+        this.destTopic = destTopic;
     }
-    public StateUpdateJobEventPayload(String esFindingId, Long tenantId, Tool tool, String owner, String repository,
+    public StateUpdateEventPayload(String esFindingId, Long tenantId, Tool tool, String owner, String repository,
             Long alertNumber, FindingState updatedState) {
         this.esFindingId = esFindingId;
         this.tenantId = tenantId;
@@ -38,7 +49,7 @@ public final class StateUpdateJobEventPayload {
         this.service = "github";
     }
 
-    public StateUpdateJobEventPayload() {}
+    public StateUpdateEventPayload() {}
 
     public String getEsFindingId() {
         return esFindingId;
@@ -94,4 +105,3 @@ public final class StateUpdateJobEventPayload {
 
 
 }
-

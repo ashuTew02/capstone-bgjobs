@@ -3,9 +3,9 @@ package com.capstone.bgjobs.kafka.consumer;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-import com.capstone.bgjobs.dto.event.StateUpdateJobEvent;
-import com.capstone.bgjobs.dto.event.payload.StateUpdateJobEventPayload;
-import com.capstone.bgjobs.model.KafkaTopic;
+import com.capstone.bgjobs.dto.event.job.StateUpdateJobEvent;
+import com.capstone.bgjobs.dto.event.payload.job.StateUpdateJobEventPayload;
+import com.capstone.bgjobs.model.JobStatus;
 import com.capstone.bgjobs.model.Tenant;
 import com.capstone.bgjobs.model.Tool;
 import com.capstone.bgjobs.repository.TenantRepository;
@@ -56,6 +56,7 @@ public class StateUpdateJobEventConsumer {
         containerFactory = "kafkaListenerContainerFactory"
     )
     public void onMessage(String rawJson) {
+        Long wholeJobId = null;
         try {
             if(!rawJson.contains("\"STATE_UPDATE_JOB\"")) {
                 return;
@@ -70,6 +71,7 @@ public class StateUpdateJobEventConsumer {
             if (service == null) {
                 throw new IllegalArgumentException("Unsupported tool: " + payload.getTool());
             }
+            wholeJobId = payload.getJobId();
         Long tenantId = payload.getTenantId();
         // Tool tool = payload.getTool();
         Tenant tenant = tenantRepository.findById(tenantId)
@@ -92,9 +94,12 @@ public class StateUpdateJobEventConsumer {
             tenantId
         );
 
-        ackProducer.produce(stateUpdateJobEvent.getEventId());
+        ackProducer.produce(payload.getJobId(), JobStatus.SUCCESS);
 
         } catch (Exception e) {
+            if(wholeJobId != null) {
+                ackProducer.produce(wholeJobId, JobStatus.FAILURE);
+            }
             LOGGER.error("Error deserializing or processing scan request", e);
         }
     }
